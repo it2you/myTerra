@@ -149,7 +149,7 @@ output "ssh_cli" {
 }
 
 output "hosts_file_entry" {
-  value = "mywebsite ${aws_instance.front_end.public_ip}"
+  value = "${aws_instance.front_end.public_ip} mywebsite"
 }
 
 output "frontend_url" {
