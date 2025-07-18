@@ -96,6 +96,11 @@ resource "aws_instance" "front_end" {
     private_key = file("${path.module}/id_rsa")
   }
 
+  provisioner "file" {
+    source      = "${path.module}/docker-compose.yml"
+    destination = "/home/ec2-user/docker-compose.yml"
+  }
+
   provisioner "remote-exec" {
     script = "${path.module}/provision-docker.sh"
   }
@@ -122,9 +127,11 @@ resource "null_resource" "front_end_provision" {
     private_key = file("${path.module}/id_rsa")
   }
   provisioner "file" {
-    source      = "${path.module}/provision-front_end.sh"
+#    source      = "${path.module}/provision-front_end.sh"    # FOR custom DOCKER IMAGE
+    source      = "${path.module}/provision-app.sh"
     destination = "/home/ec2-user/provision.sh"
   }
+
   provisioner "remote-exec" {
     inline = [
       "chmod +x /home/ec2-user/provision.sh",

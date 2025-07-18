@@ -1,0 +1,1 @@
+809659887358.dkr.ecr.ap-southeast-2.amazonaws.com/naumtest
