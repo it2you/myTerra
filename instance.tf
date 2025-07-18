@@ -134,11 +134,9 @@ resource "null_resource" "front_end_provision" {
 
   provisioner "remote-exec" {
     inline = [
-      "chmod +x /home/ec2-user/provision.sh",
+      "chmod +x /home/ec2-user/provision.sh ",
       <<EOF
-      /home/ec2-user/provision.sh \
-      --region ${var.region} \
-      --docker-image ${local.ecr_url}front_end:latest 
+      /home/ec2-user/provision.sh --region ${var.region} --docker-image ${local.ecr_url}front_end:latest 
 EOF
     ]
   }
