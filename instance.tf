@@ -118,6 +118,20 @@ resource "aws_security_group_rule" "front_end" {
 }
 ### end of front-end
 
+# Allow public access to the grafana server
+# docker run -d --name=grafana -p 3000:3000 grafana/grafana
+
+resource "aws_security_group_rule" "grafana_front_end" {
+  type        = "ingress"
+  from_port   = 3000
+  to_port     = 3000
+  protocol    = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
+
+  security_group_id = aws_security_group.front_end_sg.id
+}
+### end of front-end
+
 
 resource "null_resource" "front_end_provision" {
   connection {
@@ -127,7 +141,6 @@ resource "null_resource" "front_end_provision" {
     private_key = file("${path.module}/id_rsa")
   }
   provisioner "file" {
-#    source      = "${path.module}/provision-front_end.sh"    # FOR custom DOCKER IMAGE
     source      = "${path.module}/provision-app.sh"
     destination = "/home/ec2-user/provision.sh"
   }
@@ -142,14 +155,3 @@ EOF
   }
 }
 
-output "ssh_cli" {
-  value = "ssh ec2-user@${aws_instance.front_end.public_ip} -i id_rsa"
-}
-
-output "hosts_file_entry" {
-  value = "${aws_instance.front_end.public_ip} mywebsite"
-}
-
-output "frontend_url" {
-  value = "http://mywebsite:8080"
-}
