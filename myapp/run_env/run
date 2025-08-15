@@ -1,0 +1,1 @@
+docker run --rm -v /root/myTerra/myapp:/dojo/work -v /root:/dojo/identity:ro -v /tmp/kkk.empty:/etc/dojo.d/variables/00-multiline-vars.sh -v /tmp/kkk.bash:/etc/dojo.d/variables/01-bash-functions.sh --env-file=/tmp/kkk -it --name=naum4k ubuntu:24.04
