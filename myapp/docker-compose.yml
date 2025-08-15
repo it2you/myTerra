@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  mariadb:
+    image: mariadb:latest
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=wordpress
+      - MYSQL_DATABASE=wordpress
+      - MYSQL_USER=wordpress
+      - MYSQL_PASSWORD=wordpress
+    volumes:
+      - mariadb:/var/lib/mysql
+  wordpress:
+    image: erseco/alpine-wordpress:latest
+    restart: unless-stopped
+    depends_on:
+      - mariadb
+    ports:
+      - 8080:8080      
+    environment:
+      WP_ADMIN_USERNAME: admin
+      WP_ADMIN_PASSWORD: pswd1234
+      WP_SITE_URL: http://mywebsite:8080
+    volumes:
+      - wordpress:/var/www/html
+      - ./my-plugin:/var/www/html/wp-content/plugins/my-plugin
+volumes:
+  mariadb: null
+  wordpress: null
