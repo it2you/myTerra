@@ -1,1 +1,7 @@
-docker run --rm -v /root/myTerra/myapp:/dojo/work -v /root:/dojo/identity:ro -v /tmp/kkk.empty:/etc/dojo.d/variables/00-multiline-vars.sh -v /tmp/kkk.bash:/etc/dojo.d/variables/01-bash-functions.sh --env-file=/tmp/kkk -it --name=naum4k ubuntu:24.04
+#!/bin/bash
+APP_PWD=/root/myTerra/myapp
+myapp_dir=/myapp/work
+CMD=/etc/start_scripts/start_app
+docker run -v $APP_PWD:$myapp_dir --env-file=$APP_PWD/run_env/my_bash.env -v $APP_PWD/run_env/start_app.bash:/etc/start_scripts/start_app -p 8000:8000 -it --name=naum4k naum4k:latest $CMD
+docker ps -a | grep -v 'ONTAINER ID' | awk '{print $1}' | xargs -I {} docker rm {} --force
+
