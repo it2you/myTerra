@@ -1,23 +1,5 @@
-resource "aws_security_group" "ssh_access" {
-  vpc_id      = aws_vpc.vpc.id
-  name        = "${var.prefix}-ssh_access"
-  description = "SSH access group"
-
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name      = "Allow HTTP"
-    createdBy = "infra-${var.prefix}/news"
-  }
-}
-
 resource "aws_key_pair" "ssh_key" {
-  key_name   = "${var.prefix}-news"
+  key_name   = "${var.prefix}"
   public_key = file("${path.module}/id_rsa.pub")
 }
 
@@ -37,29 +19,6 @@ data "aws_ami" "amazon_linux_2" {
   owners = ["137112412989"] #amazon
 }
 
-### Front end
-
-resource "aws_security_group" "front_end_sg" {
-  vpc_id      = aws_vpc.vpc.id
-  name        = "${var.prefix}-front_end"
-  description = "Security group for front_end"
-
-  tags = {
-    Name      = "SG for front_end"
-    createdBy = "infra-${var.prefix}/news"
-  }
-}
-
-# Allow all outbound connections
-resource "aws_security_group_rule" "front_end_all_out" {
-  type              = "egress"
-  to_port           = 0
-  from_port         = 0
-  protocol          = "-1"
-  cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.front_end_sg.id
-}
-
 resource "aws_instance" "front_end" {
   #count = 3
   ami                         = data.aws_ami.amazon_linux_2.id
@@ -73,7 +32,6 @@ resource "aws_instance" "front_end" {
     delete_on_termination = true
   }
 
-#  iam_instance_profile = "${var.prefix}-news_host"
 
   availability_zone = "${var.region}a"
 
@@ -85,8 +43,8 @@ resource "aws_instance" "front_end" {
   ]
 
   tags = {
-    Name      = "${var.prefix}" #-${count.index}"
-    createdBy = "infra-${var.prefix}"
+    Name      = "${var.prefix}" 
+    createdBy = "it2you-${var.prefix}"
   }
 
   connection {
@@ -106,33 +64,6 @@ resource "aws_instance" "front_end" {
   }
 }
 
-# Allow public access to the front-end server
-resource "aws_security_group_rule" "front_end" {
-  type        = "ingress"
-  from_port   = 8080
-  to_port     = 8080
-  protocol    = "tcp"
-  cidr_blocks = ["0.0.0.0/0"]
-
-  security_group_id = aws_security_group.front_end_sg.id
-}
-### end of front-end
-
-# Allow public access to the grafana server
-# docker run -d --name=grafana -p 3000:3000 grafana/grafana
-
-resource "aws_security_group_rule" "grafana_front_end" {
-  type        = "ingress"
-  from_port   = 3000
-  to_port     = 3000
-  protocol    = "tcp"
-  cidr_blocks = ["0.0.0.0/0"]
-
-  security_group_id = aws_security_group.front_end_sg.id
-}
-### end of front-end
-
-
 resource "null_resource" "front_end_provision" {
   connection {
     host        = aws_instance.front_end.public_ip
@@ -149,7 +80,7 @@ resource "null_resource" "front_end_provision" {
     inline = [
       "chmod +x /home/ec2-user/provision.sh ",
       <<EOF
-      /home/ec2-user/provision.sh --region ${var.region} --docker-image ${local.ecr_url}front_end:latest 
+      /home/ec2-user/provision.sh --region ${var.region} --docker-image ${local.ecr_url}:latest 
 EOF
     ]
   }

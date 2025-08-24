@@ -6,7 +6,7 @@ resource "aws_ecr_repository" "ecr_repo" {
 data "aws_caller_identity" "current" {}
 
 locals {
-  ecr_url = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/${var.prefix}"
+  ecr_url = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/${var.prefix}-ecr_repo"
 }
 
 resource "aws_ssm_parameter" "ecr" {

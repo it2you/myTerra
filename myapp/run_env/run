@@ -2,6 +2,6 @@
 APP_PWD=/root/myTerra/myapp
 myapp_dir=/myapp/work
 CMD=/etc/start_scripts/start_app
-docker run -v $APP_PWD:$myapp_dir --env-file=$APP_PWD/run_env/my_bash.env -v $APP_PWD/run_env/start_app.bash:/etc/start_scripts/start_app -p 8000:8000 -it --name=naum4k naum4k:latest $CMD
+docker run -v $APP_PWD:$myapp_dir --env-file=$APP_PWD/run_env/my_bash.env -v $APP_PWD/run_env/start_app.bash:/etc/start_scripts/start_app -p 8000:8000 -it --name=khersh-laravel-php khersh-laravel-php:latest #$CMD
 docker ps -a | grep -v 'ONTAINER ID' | awk '{print $1}' | xargs -I {} docker rm {} --force
 
