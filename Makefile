@@ -13,6 +13,7 @@ clean:
 	rm Dockerfile
 	aws_infrastructure.out
 	rm $(ECR_URL_FILE)
+	rm alb.tf ecs.tf
 
 #_%.test:
 #	cd $* && python3 -m pip install -r requirements.txt && python3 -m pytest
@@ -61,39 +62,10 @@ pushimage:
 aws_ecr:
 	cd $(SRC_FOLDER)
 	cp  temporary_out_of_action/alb.tf temporary_out_of_action/ecs.tf .
+	terraform apply
 
 
-
-
-_%.deinfra: ssh_key
-	cd infra/$* && terraform init && terraform destroy -auto-approve
-
-%.deinfra:
-	dojo "make _$*.deinfra"
-
-_deploy_site:
-	cd build &&\
-	mkdir -p static &&\
-	cd static &&\
-	tar xf ../static.tgz &&\
-	aws s3 sync . s3://news$$(cat ../../interview_id.txt)-terraform-infra-static-pages/static/
-
-deploy_site:
-	dojo "make _deploy_site"
-
-# Interview time:
-
-deploy_interview:
-	$(MAKE) clean
-	$(MAKE) static
-	$(MAKE) backend-support.infra
-	$(MAKE) base.infra
-	$(MAKE) docker # builds all images
-	$(MAKE) push
-	$(MAKE) news.infra
-	$(MAKE) deploy_site
-
-destroy_interview:
-	$(MAKE) news.deinfra
-	$(MAKE) base.deinfra
-	$(MAKE) backend-support.deinfra
+destroy_all: 
+	cd $(SRC_FOLDER)
+	terraform init && terraform destroy -auto-approve
+	make clean

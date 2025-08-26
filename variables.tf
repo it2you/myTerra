@@ -9,6 +9,6 @@ variable "instance_type" {
 }
 
 variable "container_port" {
-  default = "8080"
+  default = "8000"
 }
 
