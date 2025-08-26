@@ -1,9 +1,8 @@
 SRC_FOLDER=/root/myTerra
 APP_DIR=$(SRC_FOLDER)/myapp
-
 ECR_URL_FILE=$(SRC_FOLDER)/ecr-url.txt
-SSH_KEY=id_rsa
 DOCKER_FOLDER=$(SRC_FOLDER)/Dockerfiles
+SSH_KEY=id_rsa
 
 clean:
 	cd $(SRC_FOLDER)
@@ -15,12 +14,6 @@ clean:
 	rm $(ECR_URL_FILE)
 	rm alb.tf ecs.tf
 
-#_%.test:
-#	cd $* && python3 -m pip install -r requirements.txt && python3 -m pytest
-
-#$(BUILD_DIR):
-#	mkdir -p $(BUILD_DIR)
-
 build_image:
 	cd $(SRC_FOLDER)
 	cp $(DOCKER_FOLDER)/Dockerfile.rpm Dockerfile
@@ -28,11 +21,6 @@ build_image:
 	rm Dockerfile
 	cp $(DOCKER_FOLDER)/Dockerfile.myapp Dockerfile
 	docker buildx build --platform linux/amd64 --load -t myapp .
-
-#docker:
-#	$(eval IMAGE_NAME = $(subst -,_,$*))
-#	cd $* && docker buildx build --platform linux/amd64 --load -t $(IMAGE_NAME) .
-
 
 $(SSH_KEY):
 	cd $(SRC_FOLDER)
@@ -56,8 +44,6 @@ pushimage:
 		aws ecr get-login-password --region ap-southeast-2 | docker login --username AWS --password-stdin $(REPO_ID)
 		docker push $(REPO_URL):latest
 
-
-#terraform apply -auto-approve
 
 aws_ecr:
 	cd $(SRC_FOLDER)
