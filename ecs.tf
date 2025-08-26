@@ -14,12 +14,18 @@ resource "aws_ecs_task_definition" "ecs_td" {
 	container_definitions    = jsonencode([
 		{
 			name      = "my-app-container"
-			image     = "${local.ecr_url}:latest"
+			image     = "${local.ecr_url}:10.4"
 			essential = true
 			portMappings = [
 				{
+					containerPort = 80
+					hostPort      = 80
+					protocol = "tcp"
+				},
+				{
 					containerPort = 8000
 					hostPort      = 8000
+					protocol = "tcp"
 				}
 			]
 		}
@@ -42,7 +48,7 @@ resource "aws_ecs_service" "ecs_td" {
 }
 
 resource "aws_iam_role" "ecs_task_execution_role" {
-	name = "ecsTaskExecutionRole"
+	name = "ecsTaskExecutionRole1"
 	assume_role_policy = jsonencode({
 		Version = "2012-10-17"
 		Statement = [
