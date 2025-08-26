@@ -8,3 +8,7 @@ variable "instance_type" {
   default = "t2.micro"
 }
 
+variable "container_port" {
+  default = "8080"
+}
+
