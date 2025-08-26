@@ -13,6 +13,7 @@ resource "aws_ssm_parameter" "ecr" {
   name  = "/${var.prefix}/base/ecr"
   value = local.ecr_url
   type  = "String"
+  overwrite = true 
 }
 
 resource "local_file" "ecr" {

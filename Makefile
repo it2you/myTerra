@@ -1,48 +1,69 @@
-APP_DIR=myapp
-ECR_URL_FILE=infra/ecr-url.txt
-SSH_KEY=infra/id_rsa
+SRC_FOLDER=/root/myTerra
+APP_DIR=$(SRC_FOLDER)/myapp
 
-_%.test:
-	cd $* && python3 -m pip install -r requirements.txt && python3 -m pytest
+ECR_URL_FILE=$(SRC_FOLDER)/ecr-url.txt
+SSH_KEY=id_rsa
+DOCKER_FOLDER=$(SRC_FOLDER)/Dockerfiles
 
-$(BUILD_DIR):
-	mkdir -p $(BUILD_DIR)
+clean:
+	cd $(SRC_FOLDER)
+	rm $(SSH_KEY)
+	rm $(SSH_KEY).pub
+	rm -rf .terraform*
+	rm Dockerfile
+	aws_infrastructure.out
+	rm $(ECR_URL_FILE)
 
-get_stack:
+#_%.test:
+#	cd $* && python3 -m pip install -r requirements.txt && python3 -m pytest
 
-docker:
-	$(eval IMAGE_NAME = $(subst -,_,$*))
-	cd $* && docker buildx build --platform linux/amd64 --load -t $(IMAGE_NAME) .
+#$(BUILD_DIR):
+#	mkdir -p $(BUILD_DIR)
 
-_%.push:
-	$(eval IMAGE_NAME = $(subst -,_,$*))
-	$(eval REPO_URL := $(shell cat ${ECR_URL_FILE}))
-	$$(aws ecr get-login  --no-include-email)
-	docker tag $(IMAGE_NAME) $(REPO_URL)$(IMAGE_NAME)
-	docker push $(REPO_URL)$(IMAGE_NAME)
+build_image:
+	cd $(SRC_FOLDER)
+	cp $(DOCKER_FOLDER)/Dockerfile.rpm Dockerfile
+	docker buildx build --platform linux/amd64 --load -t vanilla .
+	rm Dockerfile
+	cp $(DOCKER_FOLDER)/Dockerfile.myapp Dockerfile
+	docker buildx build --platform linux/amd64 --load -t myapp .
 
-%.push:
-	$(eval IMAGE_NAME = $(subst -,_,$*))
-	$(eval REPO_URL := $(shell cat ${ECR_URL_FILE}))
-	$$(dojo "aws ecr get-login --region eu-west-1 --no-include-email")
-	docker tag $(IMAGE_NAME) $(REPO_URL)$(IMAGE_NAME)
-	docker push $(REPO_URL)$(IMAGE_NAME)
+#docker:
+#	$(eval IMAGE_NAME = $(subst -,_,$*))
+#	cd $* && docker buildx build --platform linux/amd64 --load -t $(IMAGE_NAME) .
 
-
-_push: $(_DOCKER_PUSH_TARGETS)
-push: $(DOCKER_PUSH_TARGETS)
 
 $(SSH_KEY):
+	cd $(SRC_FOLDER)
 	ssh-keygen -q -N "" -f $(SSH_KEY)
 	chmod -c 0600 $(SSH_KEY)
 
 ssh_key: $(SSH_KEY)
 
-_%.infra: ssh_key
-	cd infra/$* && rm -rf .terraform && terraform init && terraform apply -auto-approve
+aws_infrastructure: ssh_key
+		cd $(SRC_FOLDER)
+		terraform init && terraform plan -out aws_infrastructure.out && terraform apply -auto-approve
+#		terraform plan | grep repository_base_url | sed -e "s/.*repository_base_url.*\"\(.*\)\"/\1/" >$(ECR_URL_FILE)
+#		tag image 
 
-%.infra:
-	dojo "make _$*.infra"
+pushimage:
+		cd $(SRC_FOLDER)
+		$(eval REPO_URL := $(shell cat ${ECR_URL_FILE}))
+		docker tag myapp $(REPO_URL) 
+#		authenticate image repo
+		$(eval REPO_ID := $(shell cat ${ECR_URL_FILE}|cut -d'/' -f1 ))
+		aws ecr get-login-password --region ap-southeast-2 | docker login --username AWS --password-stdin $(REPO_ID)
+		docker push $(REPO_URL):latest
+
+
+#terraform apply -auto-approve
+
+aws_ecr:
+	cd $(SRC_FOLDER)
+	cp  temporary_out_of_action/alb.tf temporary_out_of_action/ecs.tf .
+
+
+
 
 _%.deinfra: ssh_key
 	cd infra/$* && terraform init && terraform destroy -auto-approve

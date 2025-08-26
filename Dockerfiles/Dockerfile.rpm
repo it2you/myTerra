@@ -1,7 +1,11 @@
-FROM vanilla:latest
+FROM public.ecr.aws/amazonlinux/amazonlinux:latest
 
 RUN mkdir -p /app
 WORKDIR /app
+
+RUN yum update
+RUN yum upgrade -y
+RUN yum install  net-tools php composer php8.3-xml php-sqlite3  nmap-ncat.x86_64 vim  -y
 
 COPY myapp myapp
 ENV myapp_dir=/app/myapp
