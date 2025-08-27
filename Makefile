@@ -46,12 +46,17 @@ pushimage:
 
 
 aws_ecr:
-	cd $(SRC_FOLDER)
-	cp  temporary_out_of_action/alb.tf temporary_out_of_action/ecs.tf .
-	terraform apply
+		cd $(SRC_FOLDER)
+		cp  temporary_out_of_action/alb.tf temporary_out_of_action/ecs.tf .
+		terraform apply -auto-approve
 
+deploy_all:	
+		$(MAKE) build_image
+	        $(MAKE) aws_infrastructure
+		$(MAKE) pushimage
+		$(MAKE) aws_ecr
 
 destroy_all: 
-	cd $(SRC_FOLDER)
-	terraform init && terraform destroy -auto-approve
-	make clean
+		cd $(SRC_FOLDER)
+		terraform init && terraform destroy -auto-approve
+		$(MAKE) clean
