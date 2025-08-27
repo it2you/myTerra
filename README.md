@@ -2,10 +2,12 @@
 # Cloud Infrastructure Engineer
 
 ## Video Of Deployment:
-    [Click to Video Demo](https://it2you.com.au/Global360)
+
+[Click to Video Demo](https://it2you.com.au/Global360)
 
 ## GitHub Repository:
-    [Click to GitHub](https://github.com/it2you/myTerra)
+
+[Click to GitHub](https://github.com/it2you/myTerra)
 
 ## Prerequisite
     My Prerequisits : 
