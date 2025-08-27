@@ -1,5 +1,5 @@
-# Global 360 
-# Cloud Infrastructure Engineer - HR Demo 
+# Global 360 - HR Demo
+# Cloud Infrastructure Engineer
 
 ## Video Of Deployment:
     https://it2you.com.au/Global360
