@@ -71,3 +71,15 @@ resource "aws_security_group_rule" "grafana_front_end" {
   security_group_id = aws_security_group.front_end_sg.id
 }
 ### end of front-end
+
+resource "aws_security_group_rule" "for_alb" {
+  type        = "ingress"
+  from_port   = 80
+  to_port     = 80
+  protocol    = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
+
+  security_group_id = aws_security_group.front_end_sg.id
+}
+### end of front-end
+
