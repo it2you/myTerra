@@ -3,15 +3,17 @@
 
 ## Video Of Deployment:
 
-## Prerequisite
+## GitHub Repository:
+    https://github.com/it2you/myTerra
 
-My Prerequisits : 
-    1. LXC container with docker
-    2. libraries to run Makefile 
-        1. Ubuntu : apt-get install build-essential
-        2. AWSLinux: yum install make
-    3. awscli package 
-    4. Git binaries 
+## Prerequisite
+    My Prerequisits : 
+        1. LXC container with docker
+        2. libraries to run Makefile 
+            1. Ubuntu : apt-get install build-essential
+            2. AWSLinux: yum install make
+        3. awscli package 
+        4. Git binaries 
 
 ## Install dependencies
     ### Setup aws credentials
@@ -26,25 +28,23 @@ My Prerequisits :
     
 
 ## Project directory structure
-
-See video for details
-
-├── Dockerfiles - different Dockerfiles 
-├── myapp - php application 
-│   ├── app
-│   ├── bootstrap
-│   ├── config
-│   ├── database
-│   ├── laravel
-│   ├── public
-│   ├── resources
-│   ├── routes
-│   ├── run_env
-│   ├── screenshots
-│   ├── storage
-│   ├── tests
-│   └── vendor
-└── temporary_out_of_action - some terraform files for staged deployment 
+    See video for details
+    ├── Dockerfiles - different Dockerfiles 
+    ├── myapp - php application 
+    │   ├── app
+    │   ├── bootstrap
+    │   ├── config
+    │   ├── database
+    │   ├── laravel
+    │   ├── public
+    │   ├── resources
+    │   ├── routes
+    │   ├── run_env
+    │   ├── screenshots
+    │   ├── storage
+    │   ├── tests
+    │   └── vendor
+    └── temporary_out_of_action - some terraform files for staged deployment 
 
 See video for details
 
