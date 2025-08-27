@@ -1,4 +1,4 @@
-# Global 360 - HR Demo
+# Global 360 HR Demo
 # Cloud Infrastructure Engineer
 
 ## Video Of Deployment:
