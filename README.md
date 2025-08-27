@@ -1,7 +1,7 @@
-# Project Name myTerra
-    terraform demo for Global 360 - Cloud Infrastructure Engineer
+# Global 360 - Cloud Infrastructure Engineer - HR Demo 
 
 ## Video Of Deployment:
+    https://it2you.com.au/Global360
 
 ## GitHub Repository:
     https://github.com/it2you/myTerra
