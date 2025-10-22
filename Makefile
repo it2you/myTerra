@@ -32,6 +32,7 @@ ssh_key: $(SSH_KEY)
 aws_infrastructure: ssh_key
 		cd $(SRC_FOLDER)
 		terraform init && terraform plan -out aws_infrastructure.out && terraform apply -auto-approve
+		rm alb.tf ecs.tf
 #		terraform plan | grep repository_base_url | sed -e "s/.*repository_base_url.*\"\(.*\)\"/\1/" >$(ECR_URL_FILE)
 #		tag image 
 

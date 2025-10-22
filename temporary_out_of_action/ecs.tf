@@ -45,6 +45,15 @@ resource "aws_ecs_service" "ecs_td" {
 		security_groups  = [aws_security_group.front_end_sg.id]
 	}
 	depends_on = [aws_iam_role_policy_attachment.ecs_task_execution_role]
+
+
+	load_balancer {
+	    target_group_arn = aws_lb_target_group.target_group.arn
+	    container_name   = "my-app-container"
+	    container_port   = 8000
+	}
+
+
 }
 
 resource "aws_iam_role" "ecs_task_execution_role" {

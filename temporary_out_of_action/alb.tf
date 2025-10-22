@@ -15,10 +15,10 @@ resource "aws_lb_target_group" "target_group" {
   target_type               = "ip"
   vpc_id                    = aws_vpc.vpc.id
   health_check {
-      path                  = "/health"
+      path                  = "/"
       protocol              = "HTTP"
       matcher               = "200"
-      port                  = "traffic-port"
+#      port                  = "traffic-port"
       healthy_threshold     = 2
       unhealthy_threshold   = 2
       timeout               = 10

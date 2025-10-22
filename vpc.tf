@@ -5,11 +5,13 @@ resource "aws_vpc" "vpc" {
     Name      = "${var.prefix}"
     createdBy = "${var.prefix}/base"
   }
+  region = "${var.region}"
 }
 
 resource "aws_ssm_parameter" "vpc" {
   name  = "/${var.prefix}/base/vpc_id"
   value = aws_vpc.vpc.id
+  region = "${var.region}"
   type  = "String"
   overwrite = true
 }
