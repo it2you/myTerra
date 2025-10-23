@@ -14,11 +14,12 @@ clean:
 	rm -f Dockerfile 
 	rm -f aws_infrastructure.out
 	rm -f $(ECR_URL_FILE)
+	rm -f alb.tf ecs.tf
 	@echo -n "**** Clean complete ****\n"
 
 clean_reset: check_clean clean
 	rm -rf .terraform*
-	rm -f alb.tf ecs.tf
+	mv terraform.tfstate* /tmp/
 	@echo -n "**** Clean Reset complete ****\n " 
 
 build_image:
