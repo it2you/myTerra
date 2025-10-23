@@ -37,3 +37,10 @@ resource "aws_lb_listener" "listener" {
     target_group_arn        = aws_lb_target_group.target_group.arn
   }
 }
+
+output "lb_dns_name" {
+  description = "The DNS name of the load balancer"
+  value = "http://${aws_alb.application_load_balancer.dns_name}"
+
+}
+

@@ -11,7 +11,8 @@ clean:
 	cd $(SRC_FOLDER)
 	rm -f $(SSH_KEY)
 	rm -f $(SSH_KEY).pub
-	rm -f Dockerfile aws_infrastructure.out
+	rm -f Dockerfile 
+	rm -f aws_infrastructure.out
 	rm -f $(ECR_URL_FILE)
 	@echo -n "**** Clean complete ****\n"
 
@@ -24,7 +25,7 @@ build_image:
 	cd $(SRC_FOLDER)
 	cp $(DOCKER_FOLDER)/Dockerfile.rpm Dockerfile
 	docker buildx build --platform linux/amd64 --load -t vanilla .
-	rm Dockerfile
+	rm -f Dockerfile
 	cp $(DOCKER_FOLDER)/Dockerfile.myapp Dockerfile
 	docker buildx build --platform linux/amd64 --load -t myapp .
 
