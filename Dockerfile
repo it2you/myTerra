@@ -1,9 +1,0 @@
-FROM vanilla:latest
-
-RUN mkdir -p /app
-WORKDIR /app
-
-COPY myapp myapp
-ENV myapp_dir=/app/myapp
-COPY myapp/run_env/start_app.bash /etc/start_scripts/start_app
-ENTRYPOINT ["/etc/start_scripts/start_app"]
