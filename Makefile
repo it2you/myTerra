@@ -4,18 +4,21 @@ ECR_URL_FILE=$(SRC_FOLDER)/ecr-url.txt
 DOCKER_FOLDER=$(SRC_FOLDER)/Dockerfiles
 SSH_KEY=id_rsa
 
-clean:
-	@echo -n "Are you sure you want to clean? [y/N] " && read ans && [ "$${ans:-N}" = "y" ]
-	cd $(SRC_FOLDER)
-	rm $(SSH_KEY)
-	rm $(SSH_KEY).pub
-	rm Dockerfile aws_infrastructure.out
-	rm $(ECR_URL_FILE)
+check_clean:
+	@echo -n "Are you sure you want to RESET clean? [y/N] " && read ans && [ "$${ans:-N}" = "y" ]
 
-clean_reset: clean
-	@echo -n "Are you sure you want to RESET? [y/N] " && read ans && [ "$${ans:-N}" = "y" ]
+clean: 
+	cd $(SRC_FOLDER)
+	rm -f $(SSH_KEY)
+	rm -f $(SSH_KEY).pub
+	rm -f Dockerfile aws_infrastructure.out
+	rm -f $(ECR_URL_FILE)
+	@echo -n "**** Clean complete ****\n"
+
+clean_reset: check_clean clean
 	rm -rf .terraform*
-	rm alb.tf ecs.tf
+	rm -f alb.tf ecs.tf
+	@echo -n "**** Clean Reset complete ****\n " 
 
 build_image:
 	cd $(SRC_FOLDER)
