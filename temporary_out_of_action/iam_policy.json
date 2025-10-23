@@ -1,0 +1,112 @@
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Sid": "VisualEditor0",
+			"Effect": "Allow",
+			"Action": "ec2:*",
+			"Resource": "*",
+			"Condition": {
+				"StringEquals": {
+					"aws:RequestedRegion": "ap-southeast-2"
+				}
+			}
+		},
+		{
+			"Sid": "VisualEditor1",
+			"Effect": "Allow",
+			"Action": "ecr:*",
+			"Resource": "*",
+			"Condition": {
+				"StringEquals": {
+					"aws:RequestedRegion": "ap-southeast-2"
+				}
+			}
+		},
+		{
+			"Sid": "VisualEditor2",
+			"Effect": "Allow",
+			"Action": "ecs:*",
+			"Resource": "*",
+			"Condition": {
+				"StringEquals": {
+					"aws:RequestedRegion": "ap-southeast-2"
+				}
+			}
+		},
+		{
+			"Sid": "VisualEditor3",
+			"Effect": "Allow",
+			"Action": "elasticloadbalancing:*",
+			"Resource": "*",
+			"Condition": {
+				"StringEquals": {
+					"aws:RequestedRegion": "ap-southeast-2"
+				}
+			}
+		},
+		{
+			"Sid": "VisualEditor4",
+			"Effect": "Allow",
+			"Action": "elasticloadbalancing:*",
+			"Resource": "*",
+			"Condition": {
+				"StringEquals": {
+					"aws:RequestedRegion": "ap-southeast-2"
+				}
+			}
+		},
+		{
+			"Sid": "VisualEditor5",
+			"Effect": "Allow",
+			"Action": [
+				"iam:AddRoleToInstanceProfile",
+				"iam:CreateInstanceProfile",
+				"iam:DeleteInstanceProfile",
+				"iam:GetRole",
+				"iam:GetInstanceProfile",
+				"iam:ListRoles",
+				"iam:CreateRole",
+				"iam:DeleteRole",
+				"iam:AttachRolePolicy",
+				"iam:ListInstanceProfiles",
+				"iam:ListInstanceProfilesForRole",
+				"iam:PassRole",
+				"ssm:DeleteParameter",
+				"iam:CreateServiceLinkedRole",
+				"iam:DetachRolePolicy",
+				"iam:ListAttachedRolePolicies",
+				"iam:ListAccountAliases",
+				"iam:RemoveRoleFromInstanceProfile",
+				"iam:ListRolePolicies"
+			],
+			"Resource": [
+				"arn:aws:iam::809659887358:role/naumtest-nIAM",
+				"arn:aws:iam::809659887358:role/ecsTaskExecutionRole1",
+				"arn:aws:iam::809659887358:instance-profile/naumtest-nIAM"
+			]
+		},
+		{
+			"Sid": "VisualEditor6",
+			"Effect": "Allow",
+			"Action": "lambda:GetAccountSettings",
+			"Resource": "*",
+			"Condition": {
+				"StringEquals": {
+					"aws:RequestedRegion": "ap-southeast-2"
+				}
+			}
+		},
+		{
+			"Sid": "VisualEditor7",
+			"Effect": "Allow",
+			"Action": "ssm:*",
+			"Resource": "*",
+			"Condition": {
+				"StringEquals": {
+					"aws:RequestedRegion": "ap-southeast-2"
+				}
+			}
+		}
+	]
+}
